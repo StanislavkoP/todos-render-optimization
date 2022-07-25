@@ -1,9 +1,8 @@
-import {useSelector} from "react-redux";
-import {selectUser} from "../../store/selectors/user";
 import {memo} from "react";
+import {useCopyRight} from "./use-copy-right";
 
 export const CopyRightComponent = () => {
-  const user = useSelector(selectUser);
+  const { models: { user } } = useCopyRight();
 
   return (
     <footer className="info">

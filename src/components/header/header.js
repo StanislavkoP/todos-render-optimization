@@ -1,32 +1,16 @@
-import {memo, useState} from 'react';
-import { useDispatch } from 'react-redux';
-import { onCreate } from '../../store/actions/todo';
+import {memo} from 'react';
+import {useHeader} from "./use-header";
 
-const ENTER_KEY = 'Enter';
 
 function HeaderComponent({ newName, onChangeNewItemName, onSubmit }) {
-  const [name, setName] = useState('');
-  const dispatch = useDispatch();
-
-  const handleChange = event => setName(event.target.value);
-
-  const handleSubmit = event => {
-    if (event.key !== ENTER_KEY) {
-      return;
+  const {
+    models: { name },
+    commands: {
+      handleChange,
+      handleSubmit
     }
 
-    dispatch(onCreate(name));
-    onCreate(name);
-    setName('');
-  };
-
-  // const handleSubmit = event => {
-  //   if (event.key !== ENTER_KEY) {
-  //     return;
-  //   }
-  //
-  //   onSubmit()
-  // };
+  } = useHeader({ newName, onChangeNewItemName, onSubmit });
 
 
   return (

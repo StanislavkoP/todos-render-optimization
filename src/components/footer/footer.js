@@ -1,22 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { FILTERS } from '../../constants/filter';
-import { selectCompleted, selectNotCompleted } from '../../store/selectors/todo';
-import { onClearCompleted } from '../../store/actions/todo';
-import { onFilterSelect } from '../../store/actions/filter';
+import {useFooter} from "./use-footer";
+
+const filterTitles = [
+  { key: FILTERS.all, value: 'All' },
+  { key: FILTERS.active, value: 'Active' },
+  { key: FILTERS.completed, value: 'Completed' }
+];
 
 export function Footer() {
-  const filterTitles = [
-    { key: FILTERS.all, value: 'All' },
-    { key: FILTERS.active, value: 'Active' },
-    { key: FILTERS.completed, value: 'Completed' }
-  ];
-  const dispatch = useDispatch();
-  const completedCount = useSelector(state => selectCompleted(state).length);
-  const itemsLeft = useSelector(state => selectNotCompleted(state.todos).length);
-  const filter = useSelector(state => state.filter);
-  const clearCompleted = () => dispatch(onClearCompleted());
-  const filterSelect = selectedFilter => dispatch(onFilterSelect(selectedFilter));
+  const {
+    models: {completedCount, filter,itemsLeft},
+    commands: { handleClearCompleted, handleFilterSelect }
+  } = useFooter()
+
 
   const itemText = itemsLeft === 1 ? 'item' : 'items';
 
@@ -32,7 +29,7 @@ export function Footer() {
             <a
               href="./#"
               className={classNames({ selected: filterTitle.key === filter })}
-              onClick={() => filterSelect(filterTitle.key)}
+              onClick={() => handleFilterSelect(filterTitle.key)}
             >
               {filterTitle.value}
             </a>
@@ -40,7 +37,7 @@ export function Footer() {
         ))}
       </ul>
       {!!completedCount && (
-        <button className="clear-completed" onClick={clearCompleted}>
+        <button className="clear-completed" onClick={handleClearCompleted}>
           Clear completed
         </button>
       )}

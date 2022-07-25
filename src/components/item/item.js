@@ -1,20 +1,14 @@
-import {memo, useState} from 'react';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import RemoveButton from './remove-btn';
+import { useItem } from './use-item';
 
 function ItemComp({ todo, onUpdate, onRemove }) {
-  const [editing, setEditing] = useState(false);
-  const [name, setName] = useState(todo.name);
-
-  const handleEdit = () => setEditing(true);
-  const handleCompleted = () => onUpdate({ id: todo.id, completed: !todo.completed });
-  const handleRemove = () => onRemove(todo.id);
-  const handleChange = event => setName(event.target.value);
-  const handleBlur = () => {
-    onUpdate({ id: todo.id, name });
-    setEditing(false);
-  };
+  const {
+    models: { editing, name },
+    commands: { handleBlur, handleChange, handleCompleted, handleEdit, handleRemove }
+  } = useItem({ todo, onUpdate, onRemove });
 
   const { completed } = todo;
 
@@ -40,5 +34,5 @@ ItemComp.propTypes = {
   onRemove: PropTypes.func.isRequired
 };
 
-export const Item = memo(ItemComp)
+export const Item = memo(ItemComp);
 // export const Item = ItemComp
